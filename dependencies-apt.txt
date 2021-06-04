@@ -4,3 +4,7 @@ libgl1-mesa-glx
 
 # used by matplotlib
 python3-tk
+
+ros-noetic-image-geometry
+ros-noetic-map-server
+ros-noetic-hector-trajectory-server
