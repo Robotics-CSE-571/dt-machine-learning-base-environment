@@ -48,15 +48,13 @@ docker run --rm --runtime=nvidia  nvidia/cuda:11.0-base nvidia-smi
 Which should list your GPU devices which is available within the docker image.
 Otherwise there is some issue in your setup.
 
-## Build the image for laptop
+## Build and run the image on Laptop
 
 It is going to be relatively time consuming
 
 ```bash
 dts devel build  -f
 ```
-
-## Run the image on laptop but connected to roscore on the robot
 
 change the robot name and ip according to yours.
 
@@ -66,9 +64,51 @@ ROBOT_IP="${ROBOT_NAME}.local"
 dts devel run -f --net host -- -e ROS_MASTER_URI=http://${ROBOT_IP}:11311 -e VEHICLE_NAME=${ROBOT_NAME} --runtime nvidia
 ```
 
+## Build and run the image for Jetson
+
+Note building the image for Jetson is taking very long time but the nvidia runtime stuff should 
+be already available on jetson and no extra requirements are need.
+
+To build the image for Jetson
+
+```bash
+ROBOT_NAME="yousofsduckie"
+dts devel build -f -H ${ROBOT_NAME}.local --ncpus 4
+```
+
+To run the image on Jetson
+
+```bash
+dts devel run -H ${ROBOT_NAME}.local
+```
+
+## Test
+
 The current version should print somewhere in the terminal as the following
 
 ```bash
 torch is imported successfully
 cuda available? True
+```
+
+## Troubleshooting
+
+### "Not enough space" on Jetson during building the image
+
+run the following to delete the dangling images.
+
+```bash
+docker -H ${ROBOT_NAME}.local image prune
+```
+
+Run `docker -H ${ROBOT_NAME}.local image ls` and see all the images. You can remove the previous images
+that you built and you do not need for example for previous project
+
+to remove an image:
+
+```bash
+docker -H ${ROBOT_NAME}.local image rm <image-name>:<image-tag>
+
+# for example
+docker -H ${ROBOT_NAME}.local image rm duckietown/cse571-sp21-project-1:main-arm64v8
 ```
