@@ -56,7 +56,7 @@ It is going to be relatively time consuming
 dts devel build  -f
 ```
 
-change the robot name and ip according to yours.
+**To run the image on laptop or workstaion**, change the robot name and ip according to yours.
 
 ```bash
 ROBOT_NAME="yousofsduckie"
@@ -76,7 +76,7 @@ ROBOT_NAME="yousofsduckie"
 dts devel build -f -H ${ROBOT_NAME}.local --ncpus 4
 ```
 
-To run the image on Jetson
+**To run the image on Jetson**
 
 ```bash
 dts devel run -H ${ROBOT_NAME}.local
