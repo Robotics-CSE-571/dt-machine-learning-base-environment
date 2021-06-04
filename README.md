@@ -112,3 +112,7 @@ docker -H ${ROBOT_NAME}.local image rm <image-name>:<image-tag>
 # for example
 docker -H ${ROBOT_NAME}.local image rm duckietown/cse571-sp21-project-1:main-arm64v8
 ```
+
+## Template ROS Node
+
+You can find the template ROS node that imports pytorch in `packages/my_dnn/src/my_dnn_node.py`.
