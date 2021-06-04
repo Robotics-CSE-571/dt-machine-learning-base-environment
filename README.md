@@ -1,10 +1,9 @@
-# Template for DNN with duckiebot
+# Template for DNN with duckiebot and a template ROS Node
 
 This is based on [this repo](https://github.com/duckietown/dt-machine-learning-base-environment) from the duckiebot.
 
 I recommend to run this image on your laptop/workstation with GPU since
-building it on Jetson is really time consuming since it needs
-to compile the pandas on Jetson which takes a long time.
+building it on Jetson is really time consuming.
 And actually I was not yet successful on building it on Jetson.
 
 If you want to use GPU, you need to first install nvidia docker runtime as
