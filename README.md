@@ -4,19 +4,20 @@ This is based on [this repo](https://github.com/duckietown/dt-machine-learning-b
 
 I recommend to run this image on your laptop/workstation with GPU since
 building it on Jetson is really time consuming.
-And actually I was not yet successful on building it on Jetson.
 
-If you want to use GPU, you need to first install nvidia docker runtime as
+If you want to use GPU on your laptop/workstation, you need to first install nvidia docker runtime as
 described on [this page](https://github.com/NVIDIA/nvidia-container-runtime#ubuntu-distributions)
-on your laptop/workstation. I do not know how to do it on Jetson though.
+on your laptop/workstation.
 
 Of course you need to have the nvidia driver for linux first.
-I do not recommend anything how to get it or download it. Since
+I do not recommend anything on how to get it or download it. Since
 it is kind of difficult for ubuntu 16.04 but they made it
 super easy for ubuntu 20.04 which they can be installed from
 apt.
 
-## install nvidia requirements
+## install nvidia requirements 
+
+If you want to run the image on your laptop/workstaion follow these, Otherwise you can skip it.
 
 ```bash
 sudo apt-get install nvidia-container-runtime
