@@ -1,14 +1,23 @@
 # Template for DNN with duckiebot
 
-I recommend run it on your laptop since building it on jetson is really time conuming since it needs
-to compile the pandas on jetson which takes a long time.
+This is based on [this repo](https://github.com/duckietown/dt-machine-learning-base-environment) from the duckiebot.
 
-If you want to use GPU, you need to first insall nvidia docker runtime as
+I recommend to run this image on your laptop/workstation with GPU since
+building it on Jetson is really time consuming since it needs
+to compile the pandas on Jetson which takes a long time.
+And actually I was not yet successful on building it on Jetson.
+
+If you want to use GPU, you need to first install nvidia docker runtime as
 described on [this page](https://github.com/NVIDIA/nvidia-container-runtime#ubuntu-distributions)
-on the laptop. I do not know how to id on jetson though.
+on your laptop/workstation. I do not know how to do it on Jetson though.
+
+Of course you need to have the nvidia driver for linux first.
+I do not recommend anything how to get it or download it. Since
+it is kind of difficult for ubuntu 16.04 but they made it
+super easy for ubuntu 20.04 which they can be installed from
+apt.
 
 ## install nvidia requirements
-Of course you need to have the nvidia driver first.
 
 ```bash
 sudo apt-get install nvidia-container-runtime
@@ -36,7 +45,7 @@ Now you have the nvidia runtime available. You can test it with
 docker run --rm --runtime=nvidia  nvidia/cuda:11.0-base nvidia-smi
 ```
 
-Which should list your GPU evices which is available within the docker image.
+Which should list your GPU devices which is available within the docker image.
 Otherwise there is some issue in your setup.
 
 ## Build the image for laptop
@@ -53,7 +62,7 @@ change the robot name and ip according to yours.
 
 ```bash
 ROBOT_NAME="yousofsduckie"
-ROBOT_IP="${ROBOT_NAME}.local" 
+ROBOT_IP="${ROBOT_NAME}.local"
 dts devel run -f --net host -- -e ROS_MASTER_URI=http://${ROBOT_IP}:11311 -e VEHICLE_NAME=${ROBOT_NAME} --runtime nvidia
 ```
 
