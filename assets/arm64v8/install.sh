@@ -16,6 +16,11 @@ echo "Installing PyTorch v${PYTORCH_VERSION}..."
 pip3 install "/tmp/${PYTORCH_WHEEL_NAME}"
 rm "/tmp/${PYTORCH_WHEEL_NAME}"
 
+# torchvision
+git clone --depth 1 --branch v0.8.0 https://github.com/pytorch/vision /tmp/torchvision
+pip3 install /tmp/torchvision
+rm -rf /tmp/torchvision
+
 # download TensorRT
 echo "Downloading TensorRT v${TENSORRT_VERSION}..."
 TENSORRT_WHEEL_NAME=tensorrt-${TENSORRT_VERSION}-cp38-cp38-linux_aarch64.whl

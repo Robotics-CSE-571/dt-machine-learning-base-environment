@@ -17,7 +17,45 @@ ARG CUDA_VERSION=10.2
 # define base image
 FROM duckietown/${BASE_IMAGE}:${BASE_TAG} as BASE
 
-# recall all arguments
+# ==================================================>
+# ==> CUDA STUFF
+
+#! add cuda to path
+ENV PATH /usr/local/nvidia/bin:/usr/local/cuda/bin:${PATH}
+ENV LD_LIBRARY_PATH /usr/local/nvidia/lib:/usr/local/nvidia/lib64
+
+#! nvidia-container-runtime
+# https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/user-guide.html
+ENV NVIDIA_VISIBLE_DEVICES all
+ENV NVIDIA_DRIVER_CAPABILITIES all
+# TODO: Fix requreiment to elimitate old GPU to run the dt-ml image
+#ENV NVIDIA_REQUIRE_ARCH "maxwell pascal volta turing ampere"
+#ENV NVIDIA_REQUIRE_CUDA "cuda>=10.2"
+
+FROM BASE AS CUDA_FOR_arm64v8
+ENV CUDA_VERSION=10.2.89
+ENV CUDA_PKG_VERSION 10-2=$CUDA_VERSION-1
+ENV NCCL_VERSION 2.8.4
+ENV CUDNN_VERSION 8.1.1.33
+ENV PYTORCH_VERSION 1.7.0
+ENV PYTORCHVISION_VERSION 0.8.0a0+2f40a48
+
+FROM BASE AS CUDA_FOR_amd64
+ENV CUDA_VERSION 11.1.74
+ENV CUDA_PKG 11-1
+ENV CUDA_PKG_VERSION $CUDA_PKG=$CUDA_VERSION
+ENV NCCL_VERSION 2.8.4
+ENV CUDNN_VERSION 8.0.5.39
+
+FROM CUDA_FOR_${ARCH} AS final
+
+ENV TENSORRT_VERSION 7.1.3.4
+ENV PYCUDA_VERSION 2021.1
+
+# ==> End of CUDA STUFF
+# ==================================================>
+
+# # recall all arguments
 ARG ARCH
 ARG DISTRO
 ARG REPO_NAME
@@ -29,13 +67,15 @@ ARG BASE_IMAGE
 ARG LAUNCHER
 ARG CUDA_VERSION
 
+
+
 # check build arguments
 RUN dt-build-env-check "${REPO_NAME}" "${MAINTAINER}" "${DESCRIPTION}"
 
 # define/create repository path
 # ${SOURCE_DIR}/${REPO_NAME}
-ARG REPO_PATH="${CATKIN_WS_DIR}/src/${REPO_NAME}" 
-ARG LAUNCH_PATH="${LAUNCH_DIR}/${REPO_NAME}"
+ENV REPO_PATH="${CATKIN_WS_DIR}/src/${REPO_NAME}" 
+ENV LAUNCH_PATH="${LAUNCH_DIR}/${REPO_NAME}"
 RUN mkdir -p "${REPO_PATH}"
 RUN mkdir -p "${LAUNCH_PATH}"
 WORKDIR "${REPO_PATH}"
@@ -51,35 +91,6 @@ ENV DT_LAUNCHER "${LAUNCHER}"
 
 # generic environment
 ENV LANG C.UTF-8
-
-# ==================================================>
-# ==> Do not change the code above this line
-
-#! add cuda to path
-ENV PATH /usr/local/nvidia/bin:/usr/local/cuda/bin:${PATH}
-ENV LD_LIBRARY_PATH /usr/local/nvidia/lib:/usr/local/nvidia/lib64
-
-#! nvidia-container-runtime
-# https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/user-guide.html
-ENV NVIDIA_VISIBLE_DEVICES all
-ENV NVIDIA_DRIVER_CAPABILITIES all
-# TODO: Fix requreiment to elimitate old GPU to run the dt-ml image
-#ENV NVIDIA_REQUIRE_ARCH "maxwell pascal volta turing ampere"
-#ENV NVIDIA_REQUIRE_CUDA "cuda>=10.2"
-
-#! VERSIONING CONFIGURATION
-# this is mainly for AMD64 as on Jetson it comes with the image
-ENV CUDA_VERSION 10.2.89
-ENV CUDA_PKG_VERSION 10-2=$CUDA_VERSION-1
-ENV NCCL_VERSION 2.8.4
-ENV CUDNN_VERSION 8.1.1.33
-
-ENV PYTORCH_VERSION 1.7.0
-ENV PYTORCHVISION_VERSION 0.8.0a0+2f40a48
-
-ENV TENSORRT_VERSION 7.1.3.4
-
-ENV PYCUDA_VERSION 2021.1
 
 #! install apt dependencies
 COPY ./dependencies-apt.txt "${REPO_PATH}/"

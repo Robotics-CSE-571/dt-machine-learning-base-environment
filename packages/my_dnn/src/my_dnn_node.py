@@ -91,20 +91,9 @@ class DNNNode(DTROS):
             self.logerr('Could not decode image: %s' % e)
             return
 
-        gray_img = cv2.cvtColor(rectified_img, cv2.COLOR_RGB2GRAY)
-
-        # self.log("{}".format((rospy.Time.now()- image_msg.header.stamp).to_sec()))
-        
-
+        gray_img = cv2.cvtColor(rectified_img, cv2.COLOR_RGB2GRAY)        
         camera_params = (new_cam[0, 0], new_cam[1, 1], new_cam[0, 2], new_cam[1, 2])
-        # t = rospy.Time.now()
-        # self.log("{}".format((rospy.Time.now()- t).to_sec()))
-
-        # self.log("{}".format((rospy.Time.now()- image_msg.header.stamp).to_sec()))
         
-        for tag_id, tag in zip(detected_tag_ids, detected_tags):
-            # self.log('detected {}: ({})'.format(tag_id, (rospy.Time.now() - image_msg.header.stamp).to_sec()))
-            self._broadcast_detected_tag(image_msg, tag_id, tag)
 
 
 if __name__ == "__main__":

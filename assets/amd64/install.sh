@@ -10,18 +10,17 @@ echo "deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x8
 echo "deb https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1804/x86_64 /" \
     > /etc/apt/sources.list.d/nvidia-ml.list 
 
-# install CUDA 10.2
-apt update
-apt install -y --no-install-recommends \
-    cuda-cudart-$CUDA_PKG_VERSION \
-    cuda-compat-10-2 \
-    cuda-libraries-$CUDA_PKG_VERSION \
-    cuda-npp-$CUDA_PKG_VERSION \
-    cuda-nvtx-$CUDA_PKG_VERSION \
-    libcublas10=10.2.2.89-1 \
-    libnccl2=$NCCL_VERSION-1+cuda10.2 \
-    libcudnn8=$CUDNN_VERSION-1+cuda10.2
-apt-mark hold libnccl2 libcudnn8 cuda-compat-10-2
+# install CUDA 11.1
+apt-get update
+apt-get install -y \
+    cuda-cudart-$CUDA_PKG_VERSION-1 \
+    cuda-compat-$CUDA_PKG \
+    cuda-libraries-$CUDA_PKG \
+    cuda-nvtx-$CUDA_PKG \
+    libcublas-$CUDA_PKG \
+    libnccl2 \
+    libcudnn8=$CUDNN_VERSION-1+cuda11.1
+apt-mark hold libnccl2 libcudnn8 cuda-compat-$CUDA_PKG
 
 # TODO Install Tensor RT here
 # >>>...
@@ -30,9 +29,7 @@ apt-mark hold libnccl2 libcudnn8 cuda-compat-10-2
 rm -rf /usr/src/cudnn_samples_v8 && rm -rf /var/lib/apt/lists/*
 
 # install PyTorch
-pip3 install torch==1.7.1
-#https://download.pytorch.org/whl/cu102/torch-1.7.0-cp38-cp38-linux_x86_64.whl
-pip3 install torchvision==0.8.1
+pip3 install torch==1.8.1+cu111 torchvision==0.9.1+cu111 torchaudio==0.8.1 -f https://download.pytorch.org/whl/torch_stable.html
 
 # clean
 pip3 uninstall -y dataclasses
