@@ -16,11 +16,6 @@ echo "Installing PyTorch v${PYTORCH_VERSION}..."
 pip3 install "/tmp/${PYTORCH_WHEEL_NAME}"
 rm "/tmp/${PYTORCH_WHEEL_NAME}"
 
-# torchvision
-git clone --depth 1 --branch v0.8.0 https://github.com/pytorch/vision /tmp/torchvision
-pip3 install /tmp/torchvision
-rm -rf /tmp/torchvision
-
 # download TensorRT
 echo "Downloading TensorRT v${TENSORRT_VERSION}..."
 TENSORRT_WHEEL_NAME=tensorrt-${TENSORRT_VERSION}-cp38-cp38-linux_aarch64.whl
@@ -44,7 +39,15 @@ rm "/tmp/${TENSORRT_WHEEL_NAME}"
 # clean
 pip3 uninstall -y dataclasses
 
-apt-get update && apt-get install g++-8 unzip -y
+apt-get update && apt-get install gcc-8 g++-8 unzip -y
+rm /usr/bin/gcc /usr/bin/g++
+ln -s /usr/bin/gcc-8 /usr/bin/gcc
+ln -s /usr/bin/g++-8 /usr/bin/g++
+
+# torchvision
+git clone --depth 1 --branch v0.8.0 https://github.com/pytorch/vision /tmp/torchvision
+pip3 install /tmp/torchvision
+rm -rf /tmp/torchvision
 
 #TARGET="https://pypi.python.org/simple/pycuda/"
 #PATTERN="pycuda-2021.1.tar.gz"
