@@ -18,16 +18,7 @@ print("cuda available?", torch.cuda.is_available())
 
 class DNNNode(DTROS):
     """
-        Computes an estimate of the Duckiebot pose using the wheel encoders.
-        Args:
-            node_name (:obj:`str`): a unique, descriptive name for the ROS node
-        Configuration:
-
-        Publisher:
-            ~/rectified_image (:obj:`Image`): The rectified image
-            ~at_localization (:obj:`PoseStamped`): The computed position broadcasted in TFs
-        Subscribers:
-            ~/camera_node/image/compressed (:obj:`CompressedImage`): Observation from robot
+        A template node to run a pytorch model.
        
     """
     def __init__(self, node_name):
