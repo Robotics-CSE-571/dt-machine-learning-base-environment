@@ -1,3 +1,6 @@
+:warning: We found out that running pytorch on Jetson 2GB is very memroy intensive and the Jetson hangs with all of its memory consumed. But still you 
+can use this repo to run the pytorch node on laptop or workstation that communicates with the roscore on the robot. Read more about it below.
+
 # Template for DNN with duckiebot and a template ROS Node
 
 This is based on [this repo](https://github.com/duckietown/dt-machine-learning-base-environment) from the duckiebot.
